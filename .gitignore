@@ -1,0 +1,11 @@
+# Env files
+venv/
+
+# Cache
+__pycache__/
+
+# Generated files
+create_fastapi_app.egg-info/
+
+# Testing files
+demo-app/
