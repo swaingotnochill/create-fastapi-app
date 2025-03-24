@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+{% if has_metrics %}from prometheus_client import start_http_server{% endif %}
 
 app = FastAPI(title="My first FastAPI app")
 
@@ -6,9 +7,3 @@ app = FastAPI(title="My first FastAPI app")
 def read_root():
     return {"hello": "world"}
 
-from .routers import health
-{% if metrics %}from .routers import metrics{% endif %}
-
-{% if metrics %}
-app.include_router(metrics.router)
-{% endif %}

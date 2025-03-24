@@ -83,13 +83,14 @@ def prompt_for_options() -> ProjectConfig:
 """Generate actual files"""
 def generate_project(project_dir, options: ProjectConfig):
     # Generate Common files.
-    render_template("common/app/main.py.j2", project_dir / "app/main.py", options)
+    render_template("common/app/main.py.j2", project_dir / "app/main.py", options.to_dict())
 
 
 """Render Jinja2 templates."""
-def render_template(template_path: str, destination_path, context: Any):
+def render_template(template_path: str, destination_path: Path, context: dict):
     templates = env.get_template(template_path)
-    content = templates.render()
+    print(f"DEBUG:\n {context}" )
+    content = templates.render(**context)
 
     destination_path.parent.mkdir(parents=True, exist_ok=True)
     destination_path.write_text(content)
