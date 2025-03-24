@@ -13,10 +13,10 @@ env = Environment(
     lstrip_blocks=True
 )
 
+"""Create a new FastAPI application."""
 @click.command()
 @click.argument("project_dir", default=".")
 def main(project_dir):
-    """Create a new FastAPI application."""
     project_dir = Path(project_dir).absolute()
     project_dir.mkdir(parents=True, exist_ok=True)
 
@@ -32,9 +32,8 @@ def main(project_dir):
     click.echo("`pip install -r requirements.txt`")
     click.echo("`uvicorn app.main:app --reload`")
 
-
+"""Prompt for user configurations."""
 def prompt_for_options() -> ProjectConfig:
-    """Prompt for user configurations."""
     click.echo("\n🚀Let's create your FastAPI application!\n")
 
     questions = [
@@ -81,6 +80,18 @@ def prompt_for_options() -> ProjectConfig:
         features=answers["features"]
     )
 
+"""Generate actual files"""
+def generate_project(project_dir, options: ProjectConfig):
+    # Generate Common files.
+    render_template("common/app/main.py.j2", project_dir / "app/main.py", options)
 
-def generate_project(project_dir, options):
-    pass
+
+"""Render Jinja2 templates."""
+def render_template(template_path: str, destination_path, context: Any):
+    templates = env.get_template(template_path)
+    content = templates.render()
+
+    destination_path.parent.mkdir(parents=True, exist_ok=True)
+    destination_path.write_text(content)
+    click.echo(f"Created: {destination_path.relative_to(Path.cwd())}")
+

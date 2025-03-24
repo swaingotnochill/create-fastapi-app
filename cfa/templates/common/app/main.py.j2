@@ -1,0 +1,14 @@
+from fastapi import FastAPI
+
+app = FastAPI(title="My first FastAPI app")
+
+@app.get("/")
+def read_root():
+    return {"hello": "world"}
+
+from .routers import health
+{% if metrics %}from .routers import metrics{% endif %}
+
+{% if metrics %}
+app.include_router(metrics.router)
+{% endif %}

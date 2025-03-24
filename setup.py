@@ -7,7 +7,8 @@ setup(
     install_requires=[
         "click",
         "jinja2",
-        "python-dotenv"
+        "python-dotenv",
+        "questionary"
     ],
     entry_points={
         "console_scripts": [
